@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ACME Travel Dashboard</title>
+  </head>
+<body>
+  <h1>ACME Travel Dashboard</h1>
+  <p>Explore your travel destination</p>
+  <div id="cityselect">
+    <form action="/citysearch#cities" target=htmz>
+      <label for="city">Enter a city name:</label>
+      <input type="text" id="city" name="city">
+    </form>
+      <div id="cities"></div> <!-- htmz replaces this with the city search result -->
+<select id="city" name="city">
+  <option value="">Select a city</option>
+
+    </select>
+
+    </form>
+  <div id="result">
+
+
+  </div>
+
+<iframe hidden="hidden" name="htmz" onload="setTimeout(()=>document.querySelector(contentWindow.location.hash||null)?.replaceWith(...contentDocument.body.childNodes))"></iframe>
+
+</body>
+</html>
