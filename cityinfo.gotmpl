@@ -1,0 +1,48 @@
+    <div id="cityinfo">
+		<h1>{{.CityName}}</h1>
+		<p>IATA code: {{.IATACode}}</p>
+		<p>Latitude: {{.Latitude}}, Longitude: {{.Longitude}}</p>
+        {{if .POIs}}
+            <h2>Points of Interest</h2>
+            <ul>
+            {{range .POIs}}
+                <li>{{.Name}} ({{.Category}})</li>
+            {{end}}
+            </ul>
+        {{else}}
+            <p>No points of interest. {{.POIsError}}</p>
+        {{end}}
+
+        {{if .Airport}}
+            <h2>Nearest Airport</h2>
+            <p>{{.Airport.Name}} ({{.Airport.IATACode}})</p>
+            <p>Performance: {{.Airport.Performance}} (Probability: {{.Airport.Probability}})</p>
+        {{else}}
+            <p>No airport information. {{.AirportError}}</p>
+        {{end}}
+
+        {{if .BusiestPeriod}}
+            <h2>Busiest Travel Period</h2>
+            <p>{{.BusiestPeriod}}</p>
+        {{else}}
+            <p>No busiest period info. {{.BusiestPeriodError}}</p>
+        {{end}}
+
+        {{if .MostTraveled}}
+            <h2>Most Traveled Destinations</h2>
+            <p>{{.MostTraveled}}</p>
+        {{else}}
+            <p>No most traveled destinations. {{.MostTraveledError}}</p>
+        {{end}}
+
+        {{if .Hotels}}
+            <h2>Nearby Hotels</h2>
+            <ul>
+            {{range .Hotels}}
+                <li>{{.}}</li>
+            {{end}}
+            </ul>
+        {{else}}
+            <p>No Hotels. {{.HotelsError}}</p>
+        {{end}}
+    </div>

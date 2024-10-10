@@ -12,7 +12,10 @@
             <input type="submit" value="Search"/>
         </form>
         <!-- htmz replaces this with the city search result -->
-        <div id="cities">.oOo.</div>
+        <div id="cities">[City List]</div>
+
+        <!-- htmz replaces this with the travel info-->
+        <div id="cityinfo">[Travel Info]</div>
 
         <iframe hidden="hidden" name="htmz" onload="setTimeout(()=>document.querySelector(contentWindow.location.hash||null)?.replaceWith(...contentDocument.body.childNodes))"></iframe>
 

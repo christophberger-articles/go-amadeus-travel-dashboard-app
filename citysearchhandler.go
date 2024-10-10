@@ -8,23 +8,21 @@ import (
 	"strings"
 	"text/template"
 
-	"appliedgo.net/what"
 	"github.com/christophberger-articles/go-amadeus-travel-dashboard-app/internal/amadeus"
 )
 
 // HomeHandler renders the initial search page from home.html
 func (a *app) CitySearchHandler(w http.ResponseWriter, r *http.Request) {
-	locationlist := ""
+	citylist := ""
 
 	// call the Amadeus City Search API with cityname as input.
-	locations, err := a.amadeusClient.SearchCity(r.URL.Query().Get("city"))
-	what.Is(locations)
+	cities, err := a.amadeusClient.SearchCity(r.URL.Query().Get("city"))
 	if err != nil {
-		locationlist = fmt.Errorf("No cities found: %v", err).Error()
+		citylist = fmt.Errorf("No cities found: %v", err).Error()
 	} else {
-		locationlist, err = locationsToHTMLList(locations)
+		citylist, err = citiesToHTMLList(cities)
 		if err != nil {
-			locationlist = fmt.Errorf("Error generating HTML list: %v", err).Error()
+			citylist = fmt.Errorf("Error generating HTML list: %v", err).Error()
 		}
 	}
 
@@ -32,24 +30,24 @@ func (a *app) CitySearchHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
 	defer r.Body.Close()
 
-	_, err = w.Write([]byte(locationlist))
+	_, err = w.Write([]byte(citylist))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 }
 
-func locationsToHTMLList(locations []amadeus.Location) (string, error) {
+func citiesToHTMLList(locations []amadeus.City) (string, error) {
 	// Define the HTML template
 	const tmpl = `
 <ul id="cities">
 {{range .}}
-    <li><a href="/travelinfo/{{.Latitude}}/{{.Longitude}}#cityinfo">{{.Name}}</a></li>
+    <li><a href="/travelinfo?name={{.Name | urlquery}}&iata={{.IATACode}}&lat={{.Latitude}}&lon={{.Longitude}}#cityinfo" target=htmz>{{.Name}}{{- if .State}}, {{.State}}{{end}}</a></li>
 {{end}}
 </ul>`
 
 	// Parse the template
-	t, err := template.New("locationList").Parse(tmpl)
+	t, err := template.New("cityList").Parse(tmpl)
 	if err != nil {
 		return "", fmt.Errorf("error parsing template: %v", err)
 	}

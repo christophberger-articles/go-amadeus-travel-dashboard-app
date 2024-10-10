@@ -13,7 +13,7 @@ func startServer(a *app) {
 	// display the travel info for that city.
 	mux.HandleFunc("/{$}", a.DashboardHandler)
 	mux.HandleFunc("/search", a.CitySearchHandler)
-	mux.HandleFunc("/travelinfo/{latitude}/{longitude}", a.TravelInfoHandler)
+	mux.HandleFunc("/travelinfo", a.TravelInfoHandler)
 
 	// Start the server
 	go func() {

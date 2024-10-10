@@ -6,10 +6,12 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 )
 
-type Location struct {
+type City struct {
 	Name      string
+	State     string
 	IATACode  string
 	Latitude  float64
 	Longitude float64
@@ -18,15 +20,19 @@ type Location struct {
 type amadeusResponse struct {
 	Data []struct {
 		Name     string `json:"name"`
+		Subtype  string `json:"subtype"`
 		IATACode string `json:"iataCode"`
-		GeoCode  struct {
+		Address  struct {
+			StateCode string `json:"stateCode"`
+		} `json:"address"`
+		GeoCode struct {
 			Latitude  float64 `json:"latitude"`
 			Longitude float64 `json:"longitude"`
 		} `json:"geoCode"`
 	} `json:"data"`
 }
 
-func (c *Client) SearchCity(cityName string) ([]Location, error) {
+func (c *Client) SearchCity(cityName string) ([]City, error) {
 	// Construct the API URL
 	apiURL := fmt.Sprintf("%s/reference-data/locations/cities?keyword=%s",
 		c.baseURL, url.QueryEscape(cityName))
@@ -57,10 +63,13 @@ func (c *Client) SearchCity(cityName string) ([]Location, error) {
 	}
 
 	// Create and populate the locations slice
-	locations := make([]Location, len(amadeusResp.Data))
+	locations := make([]City, len(amadeusResp.Data))
 	for i, item := range amadeusResp.Data {
-		locations[i] = Location{
+		// State codes are of the form CC-SC, where CC is the country code and SC is the state code. If a country has no state code, the state code form is CC-ZZZ. For nicer display, remove the -ZZZ suffix.
+		state, _ := strings.CutSuffix(item.Address.StateCode, "-ZZZ")
+		locations[i] = City{
 			Name:      item.Name,
+			State:     state,
 			IATACode:  item.IATACode,
 			Latitude:  item.GeoCode.Latitude,
 			Longitude: item.GeoCode.Longitude,
