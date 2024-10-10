@@ -48,6 +48,12 @@ func (c *Client) Pois(latitude, longitude string) ([]POI, error) {
 				Name string `json:"name"`
 			} `json:"category"`
 		} `json:"data"`
+		Errors []struct {
+			Status int    `json:"status"`
+			Code   int    `json:"code"`
+			Title  string `json:"title"`
+			Detail string `json:"detail"`
+		} `json:"errors"`
 	}
 
 	// Unmarshal the JSON response
@@ -55,7 +61,7 @@ func (c *Client) Pois(latitude, longitude string) ([]POI, error) {
 		return nil, fmt.Errorf("error unmarshaling response: %v", err)
 	}
 
-	what.Happens("response: %s", response)
+	what.Happens("response: %v", response)
 
 	// Create and populate the POIs slice
 	pois := make([]POI, len(response.Data))
