@@ -12,8 +12,8 @@ func startServer(a *app) {
 	// If the request includes a city, the dashboard will
 	// display the travel info for that city.
 	mux.HandleFunc("/{$}", a.DashboardHandler)
-	mux.HandleFunc("/search/{city}", a.CitySearchHandler)
-	mux.HandleFunc("/city/{city}", a.TravelInfoHandler)
+	mux.HandleFunc("/search", a.CitySearchHandler)
+	mux.HandleFunc("/travelinfo/{latitude}/{longitude}", a.TravelInfoHandler)
 
 	// Start the server
 	go func() {

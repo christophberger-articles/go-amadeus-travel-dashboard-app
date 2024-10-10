@@ -1,5 +1,10 @@
 package amadeus
 
+import (
+	"fmt"
+	"net/http"
+)
+
 // tokenResponse contains either a valid access token
 // or an error that occurred while fetching the token
 type tokenResponse struct {
@@ -24,6 +29,19 @@ func New() *Client {
 	}
 	go c.refreshToken()
 	return c
+}
+
+// doRequest is a helper method to perform authenticated requests
+func (c *Client) doRequest(req *http.Request) (*http.Response, error) {
+	token, err := c.token()
+	if err != nil {
+		return nil, fmt.Errorf("could not get access token: %v", err)
+	}
+
+	req.Header.Set("Authorization", "Bearer "+token)
+
+	client := &http.Client{}
+	return client.Do(req)
 }
 
 // AuthResponse contains the unmarshaled response from the Amadeus
@@ -53,4 +71,3 @@ type AuthErrorResponse struct {
 	Code             int    `json:"code"`
 	Title            string `json:"title"`
 }
-

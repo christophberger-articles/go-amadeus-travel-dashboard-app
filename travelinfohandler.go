@@ -8,7 +8,7 @@ import (
 // HomeHandler renders the initial search page from home.html
 func (a *app) TravelInfoHandler(w http.ResponseWriter, r *http.Request) {
 
-	//cityname := r.FormValue("city")
+	//city := r.FormValue("citycode")
 
 
 	// Set the content type to HTML

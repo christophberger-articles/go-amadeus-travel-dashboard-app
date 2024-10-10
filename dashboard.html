@@ -1,29 +1,20 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>ACME Travel Dashboard</title>
-  </head>
-<body>
-  <h1>ACME Travel Dashboard</h1>
-  <p>Explore your travel destination</p>
-  <div id="cityselect">
-    <form action="/citysearch#cities" target=htmz>
-      <label for="city">Enter a city name:</label>
-      <input type="text" id="city" name="city">
-    </form>
-      <div id="cities"></div> <!-- htmz replaces this with the city search result -->
-<select id="city" name="city">
-  <option value="">Select a city</option>
+    <head>
+        <title>ACME Travel Dashboard</title>
+    </head>
+    <body>
+        <h1>ACME Travel Dashboard</h1>
+        <p>Explore your travel destination</p>
+        <form action="/search#cities" target=htmz>
+            <label for="city">Enter a city name:</label>
+            <input type="text" id="city" name="city"/>
+            <input type="submit" value="Search"/>
+        </form>
+        <!-- htmz replaces this with the city search result -->
+        <div id="cities">.oOo.</div>
 
-    </select>
+        <iframe hidden="hidden" name="htmz" onload="setTimeout(()=>document.querySelector(contentWindow.location.hash||null)?.replaceWith(...contentDocument.body.childNodes))"></iframe>
 
-    </form>
-  <div id="result">
-
-
-  </div>
-
-<iframe hidden="hidden" name="htmz" onload="setTimeout(()=>document.querySelector(contentWindow.location.hash||null)?.replaceWith(...contentDocument.body.childNodes))"></iframe>
-
-</body>
+    </body>
 </html>
