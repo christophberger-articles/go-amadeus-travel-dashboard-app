@@ -6,6 +6,8 @@ import (
 	"io"
 	"net/http"
 	"time"
+
+	"appliedgo.net/what"
 )
 
 type Airport struct {
@@ -35,22 +37,30 @@ func (c *Client) Airports(latitude, longitude string) (*Airport, error) {
 		return nil, fmt.Errorf("error reading response body: %v", err)
 	}
 
-	var airportResponse struct {
+	var response struct {
 		Data []struct {
 			Name     string `json:"name"`
 			IATACode string `json:"iataCode"`
 		} `json:"data"`
+		Errors []struct {
+			Status int    `json:"status"`
+			Code   int    `json:"code"`
+			Title  string `json:"title"`
+			Detail string `json:"detail"`
+		} `json:"errors"`
 	}
 
-	if err := json.Unmarshal(body, &airportResponse); err != nil {
+	if err := json.Unmarshal(body, &response); err != nil {
 		return nil, fmt.Errorf("error unmarshaling airport response: %v", err)
 	}
 
-	if len(airportResponse.Data) == 0 {
+	what.Happens("response: %v", response)
+
+	if len(response.Data) == 0 {
 		return nil, fmt.Errorf("no airports found")
 	}
 
-	airport := airportResponse.Data[0]
+	airport := response.Data[0]
 
 	// 2. Call On-Time Performance API
 	today := time.Now().Format("2006-01-02")
