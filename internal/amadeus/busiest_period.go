@@ -8,6 +8,8 @@ import (
 	"sort"
 	"strings"
 	"time"
+
+	"appliedgo.net/what"
 )
 
 func (c *Client) BusiestPeriod(iataCode string) (string, error) {
@@ -17,6 +19,8 @@ func (c *Client) BusiestPeriod(iataCode string) (string, error) {
 	// Construct the API URL
 	apiURL := fmt.Sprintf("%s/travel/analytics/air-traffic/busiest-period?cityCode=%s&period=%s",
 		c.baseURL, iataCode, previousYear)
+
+	what.Happens("API URL: %s", apiURL)
 
 	// Create a new request
 	req, err := http.NewRequest("GET", apiURL, nil)
@@ -43,12 +47,20 @@ func (c *Client) BusiestPeriod(iataCode string) (string, error) {
 			Period string `json:"period"`
 			Score  int    `json:"score"`
 		} `json:"data"`
+		Errors []struct {
+			Status int    `json:"status"`
+			Code   int    `json:"code"`
+			Title  string `json:"title"`
+			Detail string `json:"detail"`
+		} `json:"errors"`
 	}
 
 	// Unmarshal the JSON response
 	if err := json.Unmarshal(body, &response); err != nil {
 		return "", fmt.Errorf("error unmarshaling response: %v", err)
 	}
+
+	what.Happens("response: %v", response)
 
 	// Sort periods by score in descending order
 	sort.Slice(response.Data, func(i, j int) bool {
