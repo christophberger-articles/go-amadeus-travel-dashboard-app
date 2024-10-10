@@ -5,11 +5,13 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+
+	"appliedgo.net/what"
 )
 
 func (c *Client) Hotels(iataCode string) ([]string, error) {
 	// Construct the API URL
-	apiURL := fmt.Sprintf("%s/reference-data/locations/hotels/by-city?cityCode=%s&radius=5&radiusUnit=KM&hotelSource=ALL&max=10",
+	apiURL := fmt.Sprintf("%s/reference-data/locations/hotels/by-city?cityCode=%s",
 		c.baseURL, iataCode)
 
 	// Create a new request
@@ -40,6 +42,12 @@ func (c *Client) Hotels(iataCode string) ([]string, error) {
 				Unit  string  `json:"unit"`
 			} `json:"distance"`
 		} `json:"data"`
+		Errors []struct {
+			Status int    `json:"status"`
+			Code   int    `json:"code"`
+			Title  string `json:"title"`
+			Detail string `json:"detail"`
+		} `json:"errors"`
 	}
 
 	// Unmarshal the JSON response
@@ -47,10 +55,15 @@ func (c *Client) Hotels(iataCode string) ([]string, error) {
 		return nil, fmt.Errorf("error unmarshaling response: %v", err)
 	}
 
+	what.Happens("response: %v", response)
+
 	// Format the hotels
 	var hotels []string
 	for _, hotel := range response.Data {
-		hotelInfo := fmt.Sprintf("%s, %.2f %s", hotel.Name, hotel.Distance.Value, hotel.Distance.Unit)
+		if len(hotel.Distance.Unit) == 0 {
+			hotel.Distance.Unit = "km"
+		}
+		hotelInfo := fmt.Sprintf("%s, %.2f %s from city center", hotel.Name, hotel.Distance.Value, hotel.Distance.Unit)
 		hotels = append(hotels, hotelInfo)
 		if len(hotels) == 10 {
 			break
