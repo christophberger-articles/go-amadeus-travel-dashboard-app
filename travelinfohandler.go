@@ -52,6 +52,9 @@ func (a *app) TravelInfoHandler(w http.ResponseWriter, r *http.Request) {
 	data.Longitude = longitude
 	data.POIs, data.POIsError = a.amadeusClient.Pois(latitude, longitude)
 	data.Airport, data.AirportError = a.amadeusClient.Airports(latitude, longitude)
+	if len(data.IATACode) == 0 && data.Airport != nil {
+		citycode = data.Airport.IATACode
+	}
 	data.BusiestPeriod, data.BusiestPeriodError = a.amadeusClient.BusiestPeriod(citycode)
 	data.MostTraveled, data.MostTraveledError = a.amadeusClient.MostTraveledDestinations(citycode)
 	data.Hotels, data.HotelsError = a.amadeusClient.Hotels(citycode)
@@ -65,8 +68,6 @@ func (a *app) TravelInfoHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
-	what.Happens("Response: %s", buf.String())
 
 	if buf.Len() == 0 {
 		buf.WriteString("<div id=\"cityinfo\">No data available</div>")
