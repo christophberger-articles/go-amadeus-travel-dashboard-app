@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"strings"
 	"time"
+
+	"appliedgo.net/what"
 )
 
 func (c *Client) MostTraveledDestinations(iataCode string) (string, error) {
@@ -46,12 +48,20 @@ func (c *Client) MostTraveledDestinations(iataCode string) (string, error) {
 				} `json:"travelers"`
 			} `json:"analytics"`
 		} `json:"data"`
+		Errors []struct {
+			Status int    `json:"status"`
+			Code   int    `json:"code"`
+			Title  string `json:"title"`
+			Detail string `json:"detail"`
+		} `json:"errors"`
 	}
 
 	// Unmarshal the JSON response
 	if err := json.Unmarshal(body, &response); err != nil {
 		return "", fmt.Errorf("error unmarshaling response: %v", err)
 	}
+
+	what.Happens("response: %v", response)
 
 	// Format the destinations
 	var destinations []string
