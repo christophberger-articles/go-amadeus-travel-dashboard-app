@@ -15,7 +15,12 @@ type POI struct {
 	Category string
 }
 
-// Pois calls the Amadeus Points of Interest API and returns a slice of POIs
+// Pois retrieves Points of Interest near a specified location. It takes
+// latitude and longitude as string parameters representing the center
+// point. The function makes an API request to fetch POIs within a 5km
+// radius of the given coordinates. It returns a slice of POI structs
+// containing the name and category of each point of interest, or an
+// error if the request fails or the response cannot be processed.
 func (c *Client) Pois(latitude, longitude string) ([]POI, error) {
 	// Construct the API URL
 	apiURL := fmt.Sprintf("%s/reference-data/locations/pois?latitude=%s&longitude=%s&radius=5",

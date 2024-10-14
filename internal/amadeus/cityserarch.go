@@ -9,6 +9,7 @@ import (
 	"strings"
 )
 
+// City represents a city with its geographical and identification information
 type City struct {
 	Name      string
 	State     string
@@ -17,6 +18,8 @@ type City struct {
 	Longitude float64
 }
 
+// amadeusResponse represents the structure of the JSON response from the Amadeus API
+// for city search queries.
 type amadeusResponse struct {
 	Data []struct {
 		Name     string `json:"name"`
@@ -32,6 +35,10 @@ type amadeusResponse struct {
 	} `json:"data"`
 }
 
+// SearchCity queries the Amadeus API for cities matching the given cityName.
+// It returns a slice of City structs containing information about the matched cities,
+// including name, state, IATA code, latitude, and longitude.
+// An error is returned if there's any issue with the API request or response processing.
 func (c *Client) SearchCity(cityName string) ([]City, error) {
 	// Construct the API URL
 	apiURL := fmt.Sprintf("%s/reference-data/locations/cities?keyword=%s",

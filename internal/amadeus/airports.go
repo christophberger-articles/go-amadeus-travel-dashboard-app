@@ -17,6 +17,12 @@ type Airport struct {
 	Probability string
 }
 
+// Airports retrieves information about the nearest airport to the given
+// latitude and longitude coordinates, along with its on-time performance
+// prediction for the current date. It returns an Airport struct
+// containing the airport's name, IATA code, performance prediction, and
+// probability. An error is returned if the API request fails or if no
+// airports are found.
 func (c *Client) Airports(latitude, longitude string) (*Airport, error) {
 	apiURL := fmt.Sprintf("%s/reference-data/locations/airports?latitude=%s&longitude=%s&sort=distance&page[limit]=1",
 		c.baseURL, latitude, longitude)

@@ -12,6 +12,11 @@ import (
 	"appliedgo.net/what"
 )
 
+// BusiestPeriod returns the busiest period(s) for the given IATA code.
+// It fetches air traffic data for the previous year from the Amadeus API,
+// analyzes the data, and returns a comma-separated string of the busiest
+// period(s). The function returns an error if there are any issues with
+// the API request or data processing.
 func (c *Client) BusiestPeriod(iataCode string) (string, error) {
 	// Calculate the previous year
 	previousYear := time.Now().AddDate(-1, 0, 0).Format("2006")

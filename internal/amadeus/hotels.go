@@ -9,6 +9,12 @@ import (
 	"appliedgo.net/what"
 )
 
+// Hotels retrieves a list of hotels for a given city IATA code.
+// It returns up to 10 hotel names with their distances from the city center.
+// The function makes an API request to Amadeus' reference data endpoint.
+// It handles JSON unmarshaling and formats the hotel information.
+// If successful, it returns a slice of strings with hotel details.
+// An error is returned if any step in the process fails.
 func (c *Client) Hotels(iataCode string) ([]string, error) {
 	// Construct the API URL
 	apiURL := fmt.Sprintf("%s/reference-data/locations/hotels/by-city?cityCode=%s",
