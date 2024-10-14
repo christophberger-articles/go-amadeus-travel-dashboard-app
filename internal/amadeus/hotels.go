@@ -6,7 +6,6 @@ import (
 	"io"
 	"net/http"
 
-	"appliedgo.net/what"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 )
@@ -62,8 +61,6 @@ func (c *Client) Hotels(iataCode string) ([]string, error) {
 	if err := json.Unmarshal(body, &response); err != nil {
 		return nil, fmt.Errorf("error unmarshaling response: %v", err)
 	}
-
-	what.Happens("response: %v", response)
 
 	// Format the hotels
 	var hotels []string

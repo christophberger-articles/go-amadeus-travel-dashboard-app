@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-
-	"appliedgo.net/what"
 )
 
 // POI represents a Point of Interest
@@ -65,8 +63,6 @@ func (c *Client) Pois(latitude, longitude string) ([]POI, error) {
 	if err := json.Unmarshal(body, &response); err != nil {
 		return nil, fmt.Errorf("error unmarshaling response: %v", err)
 	}
-
-	what.Happens("response: %v", response)
 
 	// Create and populate the POIs slice
 	pois := make([]POI, len(response.Data))

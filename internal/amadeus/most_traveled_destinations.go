@@ -7,15 +7,13 @@ import (
 	"net/http"
 	"strings"
 	"time"
-
-	"appliedgo.net/what"
 )
 
 // MostTraveledDestinations retrieves the top 5 most traveled destinations
 // from the given IATA code for the current month. It returns a string
 // containing the destinations and their traveler scores, or an error if
 // the request fails. The returned string format is "DEST1: SCORE1,
-// DEST2: SCORE2, ...". 
+// DEST2: SCORE2, ...".
 func (c *Client) MostTraveledDestinations(iataCode string) (string, error) {
 	// Get current month in YYYY-MM format
 	currentMonth := time.Now().Format("2006-01")
@@ -65,8 +63,6 @@ func (c *Client) MostTraveledDestinations(iataCode string) (string, error) {
 	if err := json.Unmarshal(body, &response); err != nil {
 		return "", fmt.Errorf("error unmarshaling response: %v", err)
 	}
-
-	what.Happens("response: %v", response)
 
 	// Format the destinations
 	var destinations []string

@@ -6,8 +6,6 @@ import (
 	"io"
 	"net/http"
 	"time"
-
-	"appliedgo.net/what"
 )
 
 type Airport struct {
@@ -59,8 +57,6 @@ func (c *Client) Airports(latitude, longitude string) (Airport, error) {
 	if err := json.Unmarshal(body, &response); err != nil {
 		return Airport{}, fmt.Errorf("error unmarshaling airport response: %v", err)
 	}
-
-	what.Happens("response: %v", response)
 
 	if len(response.Data) == 0 {
 		return Airport{}, fmt.Errorf("no airports found")

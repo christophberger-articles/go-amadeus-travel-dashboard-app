@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"text/template"
 
-	"appliedgo.net/what"
 	"github.com/christophberger-articles/go-amadeus-travel-dashboard-app/internal/amadeus"
 )
 
@@ -58,8 +57,6 @@ func (a *app) TravelInfoHandler(w http.ResponseWriter, r *http.Request) {
 	data.MostTraveled, data.MostTraveledError = a.amadeusClient.MostTraveledDestinations(citycode)
 	data.Hotels, data.HotelsError = a.amadeusClient.Hotels(citycode)
 
-	what.Happens("Data: %+v", data)
-
 	// Execute the template
 	var buf bytes.Buffer
 	err := t.Execute(&buf, data)
@@ -72,7 +69,6 @@ func (a *app) TravelInfoHandler(w http.ResponseWriter, r *http.Request) {
 		buf.WriteString("<div id=\"cityinfo\">No data available</div>")
 	}
 
-	// Set the content type to HTML
 	w.Header().Set("Content-Type", "text/html")
 
 	_, err = w.Write([]byte(buf.Bytes()))
