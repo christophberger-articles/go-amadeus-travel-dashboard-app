@@ -14,7 +14,6 @@ import (
 var tmpl string
 
 // TravelInfoHandler renders the HTML snippet containing the city's travel information.
-
 func (a *app) TravelInfoHandler(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
