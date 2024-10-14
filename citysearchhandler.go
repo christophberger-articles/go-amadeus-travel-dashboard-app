@@ -40,11 +40,13 @@ func (a *app) CitySearchHandler(w http.ResponseWriter, r *http.Request) {
 func citiesToHTMLList(locations []amadeus.City) (string, error) {
 	// Define the HTML template
 	const tmpl = `
-<ul id="cities">
-{{range .}}
-    <li><a href="/travelinfo?name={{.Name | urlquery}}&iata={{.IATACode}}&lat={{.Latitude}}&lon={{.Longitude}}#cityinfo" target=htmz>{{.Name}}{{- if .State}}, {{.State}}{{end}}</a></li>
-{{end}}
-</ul>`
+<div id="cities" style="height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;">
+        <ul style="list-style-type: none; padding: 0; margin: 0;">
+            {{range .}}
+                <li><a href="/travelinfo?name={{.Name | urlquery}}&iata={{.IATACode}}&lat={{.Latitude}}&lon={{.Longitude}}#cityinfo" target=htmz>{{.Name}}{{- if .State}}, {{.State}}{{end}}</a></li>
+            {{end}}
+        </ul>
+</div>`
 
 	// Parse the template
 	t, err := template.New("cityList").Parse(tmpl)
