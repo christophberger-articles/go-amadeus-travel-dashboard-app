@@ -7,6 +7,8 @@ import (
 	"net/http"
 
 	"appliedgo.net/what"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 // Hotels retrieves a list of hotels for a given city IATA code.
@@ -69,7 +71,7 @@ func (c *Client) Hotels(iataCode string) ([]string, error) {
 		if len(hotel.Distance.Unit) == 0 {
 			hotel.Distance.Unit = "km"
 		}
-		hotelInfo := fmt.Sprintf("%s, %.2f %s from city center", hotel.Name, hotel.Distance.Value, hotel.Distance.Unit)
+		hotelInfo := fmt.Sprintf("%s, %.2f %s from city center", cases.Title(language.English).String(hotel.Name), hotel.Distance.Value, hotel.Distance.Unit)
 		hotels = append(hotels, hotelInfo)
 		if len(hotels) == 10 {
 			break
