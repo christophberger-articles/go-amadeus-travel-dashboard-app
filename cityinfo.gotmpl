@@ -2,8 +2,8 @@
 		<h1>{{.CityName}}</h1>
 		<p>IATA code: {{.IATACode}}</p>
 		<p>Latitude: {{.Latitude}}, Longitude: {{.Longitude}}</p>
+        <h2>Points of Interest</h2>
         {{if .POIs}}
-            <h2>Points of Interest</h2>
             <ul>
             {{range .POIs}}
                 <li>{{.Name}} ({{.Category}})</li>
@@ -13,30 +13,30 @@
             <p>No points of interest. {{.POIsError}}</p>
         {{end}}
 
+        <h2>Nearest Airport</h2>
         {{if .Airport}}
-            <h2>Nearest Airport</h2>
             <p>{{.Airport.Name}} ({{.Airport.IATACode}})</p>
             <p>Performance: {{.Airport.Performance}} (Probability: {{.Airport.Probability}})</p>
         {{else}}
             <p>No airport information. {{.AirportError}}</p>
         {{end}}
 
+        <h2>Busiest Travel Period</h2>
         {{if .BusiestPeriod}}
-            <h2>Busiest Travel Period</h2>
             <p>{{.BusiestPeriod}}</p>
         {{else}}
             <p>No busiest period info. {{.BusiestPeriodError}}</p>
         {{end}}
 
+        <h2>Most Traveled Destinations</h2>
         {{if .MostTraveled}}
-            <h2>Most Traveled Destinations</h2>
             <p>{{.MostTraveled}}</p>
         {{else}}
             <p>No most traveled destinations. {{.MostTraveledError}}</p>
         {{end}}
 
+        <h2>Nearby Hotels</h2>
         {{if .Hotels}}
-            <h2>Nearby Hotels</h2>
             <ul>
             {{range .Hotels}}
                 <li>{{.}}</li>
