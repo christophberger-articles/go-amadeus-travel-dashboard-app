@@ -45,7 +45,7 @@ FROM alpine:latest AS final
 RUN --mount=type=cache,target=/var/cache/apk \
     apk --update add \
     ca-certificates \
-    tzdata &&
+    tzdata && \
     update-ca-certificates
 
 # Create a non-privileged user that the app will run under.
@@ -64,11 +64,6 @@ USER appuser
 # Copy the executable from the "build" stage.
 COPY --from=build /bin/server /bin/
 
-# Get the Amadeus API key and secret from build args.
-ARG id
-ARG secret
-ENV AMADEUS_CLIENT_ID=${id}
-ENV AMADEUS_CLIENT_SECRET=${secret}
 
 # Expose the port that the application listens on.
 EXPOSE 8020
