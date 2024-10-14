@@ -12,10 +12,6 @@ var dashboardHTML []byte
 
 // HomeHandler renders the initial search page from home.html
 func (a *app) DashboardHandler(w http.ResponseWriter, r *http.Request) {
-	if r.PathValue("city") != "" {
-		// get travel info
-	}
-
 	// Set the content type to HTML
 	w.Header().Set("Content-Type", "text/html")
 	defer r.Body.Close()
