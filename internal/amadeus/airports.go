@@ -23,24 +23,24 @@ type Airport struct {
 // containing the airport's name, IATA code, performance prediction, and
 // probability. An error is returned if the API request fails or if no
 // airports are found.
-func (c *Client) Airports(latitude, longitude string) (*Airport, error) {
+func (c *Client) Airports(latitude, longitude string) (Airport, error) {
 	apiURL := fmt.Sprintf("%s/reference-data/locations/airports?latitude=%s&longitude=%s&sort=distance&page[limit]=1",
 		c.baseURL, latitude, longitude)
 
 	req, err := http.NewRequest("GET", apiURL, nil)
 	if err != nil {
-		return nil, fmt.Errorf("error creating request: %v", err)
+		return Airport{}, fmt.Errorf("error creating request: %v", err)
 	}
 
 	resp, err := c.doRequest(req)
 	if err != nil {
-		return nil, fmt.Errorf("error making request: %v", err)
+		return Airport{}, fmt.Errorf("error making request: %v", err)
 	}
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, fmt.Errorf("error reading response body: %v", err)
+		return Airport{}, fmt.Errorf("error reading response body: %v", err)
 	}
 
 	var response struct {
@@ -57,13 +57,13 @@ func (c *Client) Airports(latitude, longitude string) (*Airport, error) {
 	}
 
 	if err := json.Unmarshal(body, &response); err != nil {
-		return nil, fmt.Errorf("error unmarshaling airport response: %v", err)
+		return Airport{}, fmt.Errorf("error unmarshaling airport response: %v", err)
 	}
 
 	what.Happens("response: %v", response)
 
 	if len(response.Data) == 0 {
-		return nil, fmt.Errorf("no airports found")
+		return Airport{}, fmt.Errorf("no airports found")
 	}
 
 	airport := response.Data[0]
@@ -75,18 +75,18 @@ func (c *Client) Airports(latitude, longitude string) (*Airport, error) {
 
 	performanceReq, err := http.NewRequest("GET", performanceURL, nil)
 	if err != nil {
-		return nil, fmt.Errorf("error creating performance request: %v", err)
+		return Airport{}, fmt.Errorf("error creating performance request: %v", err)
 	}
 
 	performanceResp, err := c.doRequest(performanceReq)
 	if err != nil {
-		return nil, fmt.Errorf("error making performance request: %v", err)
+		return Airport{}, fmt.Errorf("error making performance request: %v", err)
 	}
 	defer performanceResp.Body.Close()
 
 	performanceBody, err := io.ReadAll(performanceResp.Body)
 	if err != nil {
-		return nil, fmt.Errorf("error reading performance response body: %v", err)
+		return Airport{}, fmt.Errorf("error reading performance response body: %v", err)
 	}
 
 	var performanceResponse struct {
@@ -97,10 +97,10 @@ func (c *Client) Airports(latitude, longitude string) (*Airport, error) {
 	}
 
 	if err := json.Unmarshal(performanceBody, &performanceResponse); err != nil {
-		return nil, fmt.Errorf("error unmarshaling performance response: %v", err)
+		return Airport{}, fmt.Errorf("error unmarshaling performance response: %v", err)
 	}
 
-	return &Airport{
+	return Airport{
 		Name:        airport.Name,
 		IATACode:    airport.IATACode,
 		Performance: performanceResponse.Data.Result,
