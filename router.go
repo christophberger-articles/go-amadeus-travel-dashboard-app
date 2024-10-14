@@ -18,6 +18,6 @@ func startServer(a *app) {
 	// Start the server
 	go func() {
 		log.Println("Listening on http://localhost:8020")
-		log.Fatal(http.ListenAndServe("localhost:8020", mux))
+		log.Fatal(http.ListenAndServe(":8020", mux))
 	}()
 }
