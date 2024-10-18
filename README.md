@@ -31,3 +31,6 @@ You can run the demo app in a few easy steps.
 This app displays travel information for a city of your choice.
 
 1. Enter a city name and click the search button.
+2. Select a city from the list of returned cities.
+3. Go through the returned city info to plan your trip.
+   
