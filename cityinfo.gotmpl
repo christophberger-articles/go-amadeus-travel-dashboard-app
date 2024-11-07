@@ -2,16 +2,6 @@
 		<h1>{{.CityName}}</h1>
 		<p>IATA code: {{.IATACode}}</p>
 		<p>Latitude: {{.Latitude}}, Longitude: {{.Longitude}}</p>
-        <h2>Points of Interest</h2>
-        {{if .POIs}}
-            <ul>
-            {{range .POIs}}
-                <li>{{.Name}} ({{.Category}})</li>
-            {{end}}
-            </ul>
-        {{else}}
-            <p>No points of interest. {{.POIsError}}</p>
-        {{end}}
 
         <h2>Nearest Airport</h2>
         {{if .Airport}}

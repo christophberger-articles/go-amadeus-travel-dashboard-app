@@ -31,8 +31,6 @@ func (a *app) TravelInfoHandler(w http.ResponseWriter, r *http.Request) {
 		IATACode           string
 		Latitude           string
 		Longitude          string
-		POIs               []amadeus.POI
-		POIsError          error
 		Airport            amadeus.Airport
 		AirportError       error
 		BusiestPeriod      string
@@ -48,7 +46,6 @@ func (a *app) TravelInfoHandler(w http.ResponseWriter, r *http.Request) {
 	data.IATACode = citycode
 	data.Latitude = latitude
 	data.Longitude = longitude
-	data.POIs, data.POIsError = a.amadeusClient.Pois(latitude, longitude)
 	data.Airport, data.AirportError = a.amadeusClient.Airports(latitude, longitude)
 	if len(data.IATACode) == 0 {
 		citycode = data.Airport.IATACode
