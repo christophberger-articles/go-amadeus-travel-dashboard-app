@@ -68,7 +68,7 @@ func (c *Client) Hotels(iataCode string) ([]string, error) {
 		if len(hotel.Distance.Unit) == 0 {
 			hotel.Distance.Unit = "km"
 		}
-		hotelInfo := fmt.Sprintf("%s", cases.Title(language.English).String(hotel.Name))
+		hotelInfo := cases.Title(language.English).String(hotel.Name)
 		hotels = append(hotels, hotelInfo)
 		if len(hotels) == 10 {
 			break
